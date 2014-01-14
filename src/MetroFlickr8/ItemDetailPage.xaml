@@ -13,6 +13,7 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        <local:ByteToImageSourceValueConverter x:Name="ImageConverter"/>
 <Style x:Key="AppBarTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="12"/>
@@ -85,7 +86,7 @@
                                       </Paragraph>
                                     <Paragraph LineStackingStrategy="MaxHeight">
                                         <InlineUIContainer>
-                                            <Image x:Name="image" MaxHeight="480" Margin="0,20,0,10" Stretch="Uniform" Source="{Binding LargeImage}"/>
+                                            <Image x:Name="image" MaxHeight="480" Margin="0,20,0,10" Stretch="Uniform" Source="{Binding LargeImage , Converter={StaticResource ImageConverter}}"/>
                                         </InlineUIContainer>
                                     </Paragraph>
                                     <Paragraph>

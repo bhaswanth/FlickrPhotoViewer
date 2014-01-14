@@ -23,7 +23,7 @@ namespace MetroFlickr8.Controllers
                 }
 
                 _Breadcrumb = value;
-                
+
                 //base.OnPropertyChanged("Breadcrumb");
             }
         }
@@ -33,7 +33,7 @@ namespace MetroFlickr8.Controllers
         public FlickrDataSource DataSource { get; private set; }
 
         public NavigationController(string username, string apiKey)
-        {            
+        {
             this.DataSource = new FlickrDataSource(username, apiKey);
         }
 
@@ -54,14 +54,14 @@ namespace MetroFlickr8.Controllers
                         await this.DataSource.LoadAsync(page.Dispatcher);
                         _UpdateTile();
                         page.Items = this.DataSource.ImageSets;
-                        
+
                         break;
                     }
                 case ViewType.Home:
                     {
                         var page = new MainPage();
                         page.DataContext = context;
-                        
+
                         Window.Current.Content = page;
                         Window.Current.Activate();
 
@@ -81,7 +81,7 @@ namespace MetroFlickr8.Controllers
 
                         break;
                     }
-                
+
             }
 
             this.CurrentViewType = type;
@@ -98,7 +98,7 @@ namespace MetroFlickr8.Controllers
             }
 
             var template = Windows.UI.Notifications.TileUpdateManager.GetTemplateContent(Windows.UI.Notifications.TileTemplateType.TileWidePeekImageCollection01);
-            
+
             var images = template.GetElementsByTagName("image");
 
             var orderedImagesFromSource = this.DataSource.SelectAllImages().OrderBy(o => o.Date);
@@ -109,12 +109,16 @@ namespace MetroFlickr8.Controllers
             }
 
             var imageSourceArray = orderedImagesFromSource.ToArray();
-            
+
+            if (imageSourceArray.Count() != 0)
+            {
+
                 for (int i = 0; i < images.Length; i++)
                 {
                     images[i].Attributes.GetNamedItem("src").NodeValue = imageSourceArray[i].ImageUri;
                 }
-           
+            }
+
             var text = template.GetElementsByTagName("text");
             text[0].AppendChild(template.CreateTextNode(tileTitle));
 

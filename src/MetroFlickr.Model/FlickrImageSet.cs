@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using System.Collections.ObjectModel;
+using System.Net;
+using System.IO;
 
 namespace MetroFlickr.Model
 {
@@ -23,7 +22,7 @@ namespace MetroFlickr.Model
 
         public string Description { get; set; }
 
-        public ImageSource Image { get; set; }
+        public byte[] Image { get; set; }
 
         public IList<FlickrImage> Collection { get; set; }
         
@@ -31,7 +30,7 @@ namespace MetroFlickr.Model
         {
             this.Collection = new List<FlickrImage>();
 
-            this.Image = new BitmapImage(new Uri(imageUri));
+            this.Image = this.LoadFromResource(imageUri);
             this.Title = title;
             this.Date = date;
             this.Description = string.IsNullOrWhiteSpace(description) ? title : description;
@@ -40,6 +39,19 @@ namespace MetroFlickr.Model
         public override string ToString()
         {
             return string.Format("[ImgSet] {0} - {1} images", this.Title, this.Collection.Count);
+        }
+
+        public byte[] LoadFromResource(string name)
+        {
+            WebRequest req = HttpWebRequest.Create(name);
+
+            using (Stream stream = req.GetResponse().GetResponseStream())
+            {
+                MemoryStream buffer = new MemoryStream();
+                stream.CopyTo(buffer);
+
+                return buffer.ToArray();
+            }
         }
 
        

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace MetroFlickr.Model
 {
@@ -15,19 +14,19 @@ namespace MetroFlickr.Model
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string Description { get; set; }        
 
-        public ImageSource Image { get; private set; }
+        public byte[] Image { get; private set; }
 
         public string ImageUri { get; private set; }
 
-        public string LargeImageUri { get; private set; }
+        public string LargeImageUri { get; private set; }       
 
-        public ImageSource LargeImage
+        public byte[] LargeImage
         {
             get
             {
-                return new BitmapImage(new Uri(this.LargeImageUri));
+                return this.LoadFromResource(this.LargeImageUri);
             }
         }
 
@@ -39,7 +38,7 @@ namespace MetroFlickr.Model
             this.LargeImageUri = largeImageUri;
 
             this.ImageSet = imageSet;
-            this.Image = new BitmapImage(new Uri(smallImageUri));
+            this.Image = this.LoadFromResource(smallImageUri);
             this.Title = title;
             this.Date = date;
             this.Description = Description;
@@ -48,6 +47,19 @@ namespace MetroFlickr.Model
         public override string ToString()
         {
             return string.Format("[Img] {0} - {1}", this.ImageUri, this.Title);
-        }        
+        }
+
+        public byte[] LoadFromResource(string name)
+        {
+            WebRequest req = HttpWebRequest.Create(name);
+
+            using (Stream stream = req.GetResponse().GetResponseStream())
+            {
+                MemoryStream buffer = new MemoryStream();
+                stream.CopyTo(buffer);
+
+                return buffer.ToArray();
+            }
+        }
     }
 }

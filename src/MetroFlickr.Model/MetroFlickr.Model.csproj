@@ -33,8 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FlickrDataSource.cs" />
     <Compile Include="FlickrImage.cs" />
     <Compile Include="FlickrImageSet.cs" />
     <Compile Include="NotificationObject.cs" />
@@ -47,7 +45,7 @@
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v11.0\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

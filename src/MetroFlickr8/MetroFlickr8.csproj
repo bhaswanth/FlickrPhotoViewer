@@ -104,7 +104,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="CharmCont.cs" />
+    <Compile Include="Common\ByteToImageSourceValueConverter.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="DataModel\Extensions.cs" />
+    <Compile Include="DataModel\FlickrDataSource.cs" />
     <Compile Include="GroupedItemsPage.xaml.cs">
       <DependentUpon>GroupedItemsPage.xaml</DependentUpon>
     </Compile>
@@ -174,16 +177,16 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MetroFlickr.Model\MetroFlickr.Model.csproj">
-      <Project>{754b2cf3-2fca-4ad3-b03d-adc6969f200c}</Project>
-      <Name>MetroFlickr.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="FlickrNet, Version=3.1.4202.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\FlickrNet\FlickrNet.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetroFlickr.Model\MetroFlickr.Model.csproj">
+      <Project>{754b2cf3-2fca-4ad3-b03d-adc6969f200c}</Project>
+      <Name>MetroFlickr.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

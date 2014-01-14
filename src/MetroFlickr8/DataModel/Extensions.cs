@@ -1,10 +1,11 @@
-﻿using System;
+﻿using MetroFlickr.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetroFlickr.Model
+namespace MetroFlickr8
 {
     public static class Extensions
     {

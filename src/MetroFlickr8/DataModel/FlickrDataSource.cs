@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlickrNet;
-using Windows.UI.Xaml.Data;
+using MetroFlickr.Model;
 
-namespace MetroFlickr.Model
+namespace MetroFlickr8
 {
     public class FlickrDataSource : NotificationObject
     {
@@ -29,28 +29,28 @@ namespace MetroFlickr.Model
             _Flickr = new FlickrNet.Flickr(apiKey);            
         }
 
-        public void Load()
-        {
-            var flickrUser = _GetUserProfileAsync(this.Username).Result;
-            var photoSetCollection = _GetPhotosetCollectionAsync(flickrUser.UserId).Result;
+        //public void Load()
+        //{
+        //    var flickrUser = _GetUserProfileAsync(this.Username).Result;
+        //    var photoSetCollection = _GetPhotosetCollectionAsync(flickrUser.UserId).Result;
 
-            foreach (var photoSet in photoSetCollection)
-            {
-                FlickrImageSet imageSet = new FlickrImageSet(photoSet.PhotosetSmallUrl, photoSet.Title, photoSet.DateUpdated, photoSet.Description);
-                this.ImageSets.Add(imageSet);
-                base.OnPropertyChanged("ImageSets");
+        //    foreach (var photoSet in photoSetCollection)
+        //    {
+        //        FlickrImageSet imageSet = new FlickrImageSet(photoSet.PhotosetSmallUrl, photoSet.Title, photoSet.DateUpdated, photoSet.Description);
+        //        this.ImageSets.Add(imageSet);
+        //        base.OnPropertyChanged("ImageSets");
 
-                var photosetPhotosCollection = _GetCollectionForSetAsync(photoSet.PhotosetId).Result;
+        //        var photosetPhotosCollection = _GetCollectionForSetAsync(photoSet.PhotosetId).Result;
 
-                foreach (var photo in photosetPhotosCollection)
-                {
-                    var image = new FlickrImage(imageSet, photo.SmallUrl, photo.DoesLargeExist ? photo.LargeUrl : photo.Medium640Url, photo.Title, photo.DateTaken, photoSet.Description);
-                    imageSet.Collection.Add(image);
-                }
-            }
-        }
+        //        foreach (var photo in photosetPhotosCollection)
+        //        {
+        //            var image = new FlickrImage(imageSet, photo.SmallUrl, photo.DoesLargeExist ? photo.LargeUrl : photo.Medium640Url, photo.Title, photo.DateTaken, photoSet.Description);
+        //            imageSet.Collection.Add(image);
+        //        }
+        //    }
+        //}
 
-           public Task<IList<FlickrImageSet>> LoadAsync(Windows.UI.Core.CoreDispatcher dispatcher)
+        public Task<IList<FlickrImageSet>> LoadAsync(Windows.UI.Core.CoreDispatcher dispatcher)
         {
             var task = Task.Run(() =>
             {
@@ -60,13 +60,13 @@ namespace MetroFlickr.Model
                 foreach (var photoSet in photoSetCollection)
                 {
                     FlickrImageSet imageSet = null;
-                    
+
                     dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
                         imageSet = new FlickrImageSet(photoSet.PhotosetSmallUrl, photoSet.Title, photoSet.DateUpdated, photoSet.Description);
                         this.ImageSets.Add(imageSet);
                         base.OnPropertyChanged("ImageSets");
-                    } 
+                    }
                     );
 
                     var photosetPhotosCollection = _GetCollectionForSetAsync(photoSet.PhotosetId).Result;
@@ -107,6 +107,8 @@ namespace MetroFlickr.Model
             });
         }
 
+
+
         private Task<Person> _GetUserProfileAsync(string username)
         {
             return Task.Run(() =>
@@ -128,7 +130,7 @@ namespace MetroFlickr.Model
         {
             return Task.Run(() =>
             {
-                return _Flickr.PhotosetsGetPhotos(photosetId);            
+                return _Flickr.PhotosetsGetPhotos(photosetId);
             });
         }
     }
